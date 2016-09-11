@@ -13,8 +13,9 @@ public class CreditCard {
         //Ask user for credit card number. store number as a String.
         System.out.println("Please enter the Visa credit card number, digits only:");
         String ccNumber = String.valueOf(intInput());
+        //enters the string into a method to determine if it's a valid Visa card number and returns a boolean
         boolean isValid = isVisaCreditCardNumberValid(ccNumber);
-
+        //display to the user if the input number is a valid Visa number.
         if (isValid) {
             System.out.println("This seems to be a valid Visa credit card number");
         } else {
@@ -28,17 +29,29 @@ public class CreditCard {
 
         //TODO Replace with your code to process the credit card number, and determine if it is valid.
         //TODO Make sure all the tests pass!
-        String[] cardDigitsString = cardNumber.split("");
-        int[] cardDigits = new int[cardDigitsString.length];
 
+        //the number string that was passed into the method will get split into single digits
+        String[] cardDigitsString = cardNumber.split("");
+        //parse the digits from strings to ints
+        int[] cardDigits = new int[cardDigitsString.length];
         for (int i = 0; i < cardDigitsString.length; i++){
             cardDigits[i] = Integer.parseInt(cardDigitsString[i]);
         }
+        //determine whether the card number input is correct or not
 
+        //if the first number of the card isn't 4, or if the card number isn't 16 digits, return false
         if (cardDigits[0] != 4 || cardDigits.length != 16){
             return false;
         } else {
+            /*if the basic tests are good, then use the formula described here: http://web.eecs.umich.edu/~bartlett/credit_card_number.html
+            to determine if the card number is valid or not
+             */
+
             int digitTotal = 0;
+            /*
+            every even ordered digit is added to a running total, every odd ordered digit is also added after being
+            doubled. if a digit doubled is 10+, the sum of the two digits is added instead
+             */
 
             for (int i = 0; i < cardDigits.length; i++){
 
@@ -53,7 +66,7 @@ public class CreditCard {
                     }
                 }
             }
-
+            //if the running total is a multiple of 10 after every digit has been added, return true. if not, return false.
             if (digitTotal % 10 == 0){
                 return true;
             } else {
